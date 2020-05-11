@@ -1,0 +1,55 @@
+<form [formGroup]="setupForm">
+    <mat-form-field class="tp-full-width">
+        <input type="text" placeholder="US State" aria-label="Number" (blur)="customValueHandler('operatingStartHours')" matInput formControlName="operatingStartHours" [matAutocomplete]="operatingStartHours">
+        <mat-autocomplete #operatingStartHours="matAutocomplete">
+            <mat-option *ngFor="let state of OperatingStartHours | async" [value]="state.value">
+                {{state.value}}
+            </mat-option>
+        </mat-autocomplete>
+        <!-- <button type="button" mat-button matSuffix mat-icon-button aria-label="Clear" (click)="resetValue()">
+            <mat-icon>close</mat-icon>
+        </button> -->
+    </mat-form-field>
+    <mat-form-field class="tp-full-width">
+        <input type="text" placeholder="US State" aria-label="Number" matInput formControlName="operatingEndHours" [matAutocomplete]="operatingEndHours">
+        <mat-autocomplete #operatingEndHours="matAutocomplete">
+            <mat-option *ngFor="let state of OperatingEndHours | async" [value]="state.value">
+                {{state.value}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="tp-full-width">
+        <input type="text" placeholder="US State" aria-label="Number" matInput formControlName="recievingStartHours" [matAutocomplete]="recievingStartHours">
+        <mat-autocomplete #recievingStartHours="matAutocomplete">
+            <mat-option *ngFor="let state of RecievingStartHours | async" [value]="state.value">
+                {{state.value}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="tp-full-width">
+        <input type="text" placeholder="US State" aria-label="Number" matInput formControlName="recievingEndHours" [matAutocomplete]="recievingEndHours">
+        <mat-autocomplete #recievingEndHours="matAutocomplete">
+            <mat-option *ngFor="let state of RecievingEndHours |async" [value]="state.value">
+                {{state.value}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="tp-full-width">
+        <input type="text" placeholder="US State" aria-label="Number" matInput formControlName="dropOffStartHours" [matAutocomplete]="dropOffStartHours">
+        <mat-autocomplete #dropOffStartHours="matAutocomplete">
+            <mat-option *ngFor="let state of DropoffStartHours | async" [value]="state.value">
+                {{state.value}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field class="tp-full-width">
+        <input type="text" placeholder="US State" aria-label="Number" matInput formControlName="dropOffEndHours" [matAutocomplete]="dropOffEndHours">
+        <mat-autocomplete #dropOffEndHours="matAutocomplete">
+            <mat-option *ngFor="let state of DropoffEndHours | async" [value]="state.value">
+                {{state.value}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</form>
+
+{{setupForm.value | json}}

@@ -1,0 +1,7 @@
+<form [formGroup]="hospitalTimingsForm" novalidate>
+    <app-hours [parentFormGroup]="hospitalTimingsForm" [childFormGroup]="'mondayHours'"></app-hours>
+    <!-- <app-hours [parentFormGroup]="hospitalTimingsForm" [childFormGroup]="'tuesdayHours'"></app-hours> -->
+</form>
+
+<!-- {{hospitalTimingsForm.value | json}} -->
+<!-- {{hospitalTimingsForm.valid}} -->

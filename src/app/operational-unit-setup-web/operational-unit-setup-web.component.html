@@ -1,0 +1,198 @@
+<div class="header-container" *ngIf="setupData != undefined">
+    <div class="button-container">
+        <button class="form-button" [disabled]="setupForm.invalid" (click)="updateOperationalUnit()" mat-flat-button color="primary">
+        Save
+      </button>
+        <button class="form-button" (click)="closeSetup()" mat-stroked-button>
+        Cancel
+      </button>
+    </div>
+</div>
+<div class="setup-container" *ngIf="setupData != undefined">
+
+
+    <form [formGroup]="setupForm">
+        <div class="sub-header">Operational Unit Settings</div>
+        <hr />
+        <div class="internal-container">
+            <mat-form-field appearance="outline">
+                <mat-label>Scheduler Increment Default</mat-label>
+                <mat-select formControlName="schedulerTime">
+                    <mat-option *ngFor="let schedulerIncrement of schedulerIncrements" [value]="schedulerIncrement.id">
+                        {{ schedulerIncrement.duration }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="main-header">Hospital Hours</div>
+        <div class="hospital-hours-container">
+            <table class="days-table">
+                <tr>
+                    <th class="days-th"></th>
+                    <th class="days-th">*Operating</th>
+                    <th class="days-th">Receiving</th>
+                    <th class="days-th">Drop Off</th>
+                </tr>
+                <tr *ngFor="let hospitalDay of hospitalDays" formGroupName="{{ hospitalDay.name + 'Timing' }}">
+                    <td class="days-sub-header">
+                        <span class="day-head">{{ hospitalDay.name }}</span>
+                    </td>
+                    <td class="days-td">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Start</mat-label>
+                            <mat-select formControlName="OperatingStart">
+                                <mat-option *ngFor="let hospitalTiming of hospitalTimings" [value]="hospitalTiming.id">
+                                    {{ hospitalTiming.value }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span>to</span>
+                        <mat-form-field appearance="outline">
+                            <mat-label>End</mat-label>
+                            <mat-select formControlName="OperatingEnd" [disabled]="
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .OperatingStart == '' ||
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .OperatingStart == '1' ||
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .OperatingStart == '2'
+                  ">
+                                <span *ngFor="let hospitalTiming of hospitalTimings">
+                    <mat-option
+                      *ngIf="
+                        hospitalTiming.id !== 1 &&
+                        hospitalTiming.id !== 2 &&
+                        hospitalTiming.id >
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.OperatingStart
+                      "
+                      [value]="hospitalTiming.id"
+                    >
+                      {{ hospitalTiming.value }}
+                    </mat-option>
+                  </span>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td class="days-td">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Start</mat-label>
+                            <mat-select formControlName="ReceivingStart" [disabled]="
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .OperatingStart == '2'
+                  ">
+                                <span *ngFor="let hospitalTiming of hospitalTimings">
+                    <mat-option
+                      *ngIf="
+                        ((hospitalTiming.id >=
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.OperatingStart &&
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.OperatingEnd >= hospitalTiming.id) ||
+                          hospitalTiming.id == 1 ||
+                          hospitalTiming.id == 2 ||
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.OperatingStart == '' ||
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.OperatingStart == 1 ||
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.OperatingStart == 2) &&
+                        !(
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.OperatingStart > 1 && hospitalTiming.id == 1
+                        )
+                      "
+                      [value]="hospitalTiming.id"
+                    >
+                      {{ hospitalTiming.value }}
+                    </mat-option>
+                  </span>
+                            </mat-select>
+                        </mat-form-field>
+                        <span>to</span>
+                        <mat-form-field appearance="outline">
+                            <mat-label>End</mat-label>
+                            <mat-select formControlName="ReceivingEnd" [disabled]="
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .ReceivingStart == '' ||
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .ReceivingStart == '1' ||
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .ReceivingStart == '2' ||
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .OperatingStart == '2'
+                  ">
+                                <span *ngFor="let hospitalTiming of hospitalTimings">
+                    <mat-option
+                      *ngIf="
+                        hospitalTiming.id !== 1 &&
+                        hospitalTiming.id !== 2 &&
+                        hospitalTiming.id >
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.ReceivingStart &&
+                        (this.setupForm.controls[hospitalDay.name + 'Timing']
+                          .value.OperatingEnd >= hospitalTiming.id ||
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.OperatingStart == '1')
+                      "
+                      [value]="hospitalTiming.id"
+                    >
+                      {{ hospitalTiming.value }}
+                    </mat-option>
+                  </span>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td class="days-td">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Start</mat-label>
+                            <mat-select formControlName="DropOffStart" [disabled]="
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .OperatingStart == '2'
+                  ">
+                                <mat-option *ngFor="let hospitalTiming of hospitalTimings" [value]="hospitalTiming.id">
+                                    {{ hospitalTiming.value }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span>to</span>
+                        <mat-form-field appearance="outline">
+                            <mat-label>End</mat-label>
+                            <mat-select formControlName="DropOffEnd" [disabled]="
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .DropOffStart == '' ||
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .DropOffStart == '1' ||
+                    this.setupForm.controls[hospitalDay.name + 'Timing'].value
+                      .DropOffStart == '2'
+                  ">
+                                <span *ngFor="let hospitalTiming of hospitalTimings">
+                    <mat-option
+                      *ngIf="
+                        hospitalTiming.id !== 1 &&
+                        hospitalTiming.id !== 2 &&
+                        hospitalTiming.id >
+                          this.setupForm.controls[hospitalDay.name + 'Timing']
+                            .value.DropOffStart
+                      "
+                      [value]="hospitalTiming.id"
+                    >
+                      {{ hospitalTiming.value }}
+                    </mat-option>
+                  </span>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<div>
+    <!-- <notifier-container></notifier-container> -->
+    <ng-template #customTemplate let-notification="notification">
+        <div>
+            <strong>{{ notification.type }}:</strong> {{ notification.message }}
+        </div>
+    </ng-template>
+</div>
